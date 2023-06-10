@@ -7,10 +7,10 @@
 **PyIncentiveBC** is a Python implementation of "Rewards and Penalties" approaches used in Blockchain-based systems.
 
 ## Install
-The package has been tested for Python 3.7.3. Required packages are available in requirements.txt.
+The package has been tested for Python **3.7.3**. Required packages are available in **`requirements.txt`**.
 
 ## Example
-An example notebook is available in **`PyIncentiveBC_demo.ipynb`**
+An example notebook is available in **`src\PyIncentiveBC_demo.ipynb`**
 
 ## Contact
 For all questions or suggestions, feel free to contact me at ouaguid[at]gmail.com.
