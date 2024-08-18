@@ -5,66 +5,81 @@ from plotly.subplots import make_subplots
 
 # > This class is a  Python module for simulation of incentivization mechanism implemented in Blockchain-based Systems
 class PyIncentiveBCSystem:
-
-    def __init__(self, total_nodes, total_rounds, leader_reward, transaction_fees):
+    def __init__(self, node_list, round_list, leader_reward, transaction_fees, leader_node_round_list=None):
         """
-        This function is used to initialize the class with the values of the elementary attributes
+        Initialize the class with the provided parameters
         
-        :param total_nodes: The total number of nodes in the network
-        :param total_rounds: The total number of rounds in the simulation
+        :param node_list: A list of node names
+        :param round_list: A list of round numbers
         :param leader_reward: The reward for the leader node for each round
-        :param transaction_fees: The amount of transaction fees that are paid to the beneficiary(ies)
+        :param transaction_fees: A list of transaction fees for each round
+        :param leader_node_round_list: A list of leader nodes for each round (optional)
         """
-        # attribute initialization
-        self.total_nodes = total_nodes
-        self.total_rounds = total_rounds
+        self.node_list = node_list
+        self.round_list = round_list
         self.leader_reward = leader_reward
         self.transaction_fees = transaction_fees
-        self.data_nodes = []
-        self.current_leader = 0
-        # initialize list of all round with initial data
-        for round in range(1, self.total_rounds+1):
-            self.current_leader = self.get_next_leader_node(self.current_leader)
-            self.data_nodes.append([round, self.leader_reward, self.transaction_fees, self.current_leader])
+        self.total_rounds = len(self.round_list)
+        self.total_nodes = len(self.node_list)
+        self.leader_node_round_list = leader_node_round_list
 
-    def get_next_leader_node(self, current_leader):
+        if self.leader_node_round_list:
+            if len(self.leader_node_round_list) != self.total_rounds:
+                raise ValueError("The length of leader_node_round_list must be equal to the length of round_list")
+        
+        self.data_nodes = []
+        self.current_leader_index = 0
+
+        # Initialize the data_nodes list
+        for round in range(self.total_rounds):
+            if self.leader_node_round_list:
+                leader_node = self.leader_node_round_list[round]
+            else:
+                self.current_leader_index = self.get_next_leader_index(self.current_leader_index)
+                leader_node = self.node_list[self.current_leader_index-1]
+            
+            self.data_nodes.append([self.round_list[round], self.leader_reward, self.transaction_fees[round], leader_node])
+
+    def get_next_leader_index(self, current_leader_index):
         """
+        Get the index of the next leader node
         This consensus algorithm consists of electing nodes in turn in an equitable manner during the mining rounds of our simulation. 
         If the current leader is the last node, then the next leader will be the first node. Otherwise, the next leader is the next node
         
-        :param current_leader: The current leader node selected by the consensus algorithm
-        :return: The next selected leader node.
+        :param current_leader_index: The index of the current leader node
+        :return: The index of the next leader node
         """
-        if int(current_leader) == self.total_nodes or current_leader == 0:
-            leader = 1
+        if current_leader_index == len(self.node_list) - 1:
+            return 0
         else:
-            leader = current_leader + 1
-        return leader
-    
+            return current_leader_index + 1
+
     def start_approach_1(self):
         """
         It contain the different processes necessary to implement the first approach
 
         :return: A dataframe that contains various data regarding rewards of participating nodes
         """
-        df = pd.DataFrame(self.data_nodes , columns=['Round', 'Leader Reward', 'Transaction Fees', 'Leader Node'])
+        df = pd.DataFrame(self.data_nodes, columns=['Round', 'Leader Reward', 'Transaction Fees', 'Leader Node'])
         for ind in df.index:
-            node_list_per_round =[]
-            reward_list_per_round =[]
+            node_list_per_round = []
+            reward_list_per_round = []
             reward_total_per_round = 0
-            for node in range(1,self.total_nodes+1) :
-                node_list_per_round.append("reward_node_{}".format(node))
-                if df['Leader Node'][ind] == node :
-                    node_reward = self.leader_reward + self.transaction_fees
-                else :
+            for node in self.node_list:
+                node_list_per_round.append(f"reward_{node}")
+                if df['Leader Node'][ind] == node:
+                    node_reward = self.leader_reward + df['Transaction Fees'][ind]
+                else:
                     node_reward = 0
                 reward_list_per_round.append(node_reward)
                 reward_total_per_round += node_reward
-            node_list_per_round.append ("Reward Total per Round")
+            node_list_per_round.append("Reward Total per Round")
             reward_list_per_round.append(reward_total_per_round)
             df.loc[ind, node_list_per_round] = reward_list_per_round
-        for node in range(1,self.total_nodes+1) :
-            df.at['Total', "reward_node_{}".format(node)] = df["reward_node_{}".format(node)].sum()
+
+        for node in self.node_list:
+            df.at['Total', f"reward_{node}"] = df[f"reward_{node}"].sum()
+
         df.at['Total', "Leader Reward"] = df["Leader Reward"].sum()
         df.at['Total', "Transaction Fees"] = df["Transaction Fees"].sum()
         df.at['Total', "Reward Total per Round"] = df["Reward Total per Round"].sum()
@@ -76,70 +91,69 @@ class PyIncentiveBCSystem:
         The function contain the different processes necessary to implement the second approach
         
         :param saved_part: The percentage of the generated reward that will be saved for the next round
-        :param distributed_part: The percentage of the generated reward that will be distributed to the
-        participating nodes
+        :param distributed_part: The percentage of the generated reward that will be distributed to the participating nodes
         :param score_nodes: a list of scores for each node. The scores are between 0 and 1
         :return: A dataframe that contains various data regarding rewards of participating nodes, and a list of scores passed as a parameter or generated by default
         """
-        if len(score_nodes) == 0 :
-            score_nodes = np.random.randint(0,100,self.total_nodes).astype("float")/100
-        elif len(score_nodes) != self.total_nodes :
-              raise TypeError("Sorry, The size of the score list should be the same as the total number of participating nodes (total_nodes)")
-        current_leader = 0
-        generated_reward = self.transaction_fees
-        saved_reward = generated_reward * saved_part
-        participating_reward = generated_reward * distributed_part
-        participating_reward_per_node =  participating_reward / (self.total_nodes - 1)
-        data_nodes = []
-        for round in range(1,self.total_rounds+1):
-            current_leader = self.get_next_leader_node(current_leader)
-            penalities_per_round = 0.0
-            data_nodes.append([round,self.leader_reward,self.transaction_fees,generated_reward,saved_reward,participating_reward,participating_reward_per_node,penalities_per_round,current_leader])
+        if len(score_nodes) == 0:
+            score_nodes = np.random.randint(0, 100, self.total_nodes).astype("float") / 100
+        elif len(score_nodes) != self.total_nodes:
+            raise TypeError("Sorry, The size of the score list should be the same as the total number of participating nodes (total_nodes)")
 
-        df2 = pd.DataFrame(data_nodes , columns=['Round', 'Leader Reward', 'Transaction Fees','Generated Reward', 'Saved Reward','Participating Reward per Round','Participating reward per Node','Penalities', 'Leader Node'])
+        data_nodes = []
+        for i in range(self.total_rounds):
+            generated_reward = self.transaction_fees[i]
+            saved_reward = generated_reward * saved_part
+            participating_reward = generated_reward * distributed_part
+            participating_reward_per_node = participating_reward / (self.total_nodes - 1)
+            penalities_per_round = 0.0
+            leader_node = self.data_nodes[i][3]  # Get the leader node from data_nodes
+            data_nodes.append([self.round_list[i], self.leader_reward, self.transaction_fees[i], generated_reward, saved_reward, participating_reward, participating_reward_per_node, penalities_per_round, leader_node])
+
+        df2 = pd.DataFrame(data_nodes, columns=['Round', 'Leader Reward', 'Transaction Fees', 'Generated Reward', 'Saved Reward', 'Participating Reward per Round', 'Participating reward per Node', 'Penalities', 'Leader Node'])
         df2.round(2)
-        node_libelle_list_per_round =[]
-        node_value_list_per_round =[]
         preview_saved_reward = 0
         preview_penalities = 0
         for ind in df2.index:
-            node_libelle_list_per_round =[]
-            node_value_list_per_round =[]
-            generated_reward = self.transaction_fees + preview_saved_reward + preview_penalities
+            node_libelle_list_per_round = []
+            node_value_list_per_round = []
+            generated_reward = self.transaction_fees[ind] + preview_saved_reward + preview_penalities
             saved_reward = generated_reward * saved_part
             participating_reward = generated_reward * distributed_part
             participating_reward_per_node = participating_reward / (self.total_nodes - 1)
             penalities = 0
             reward_total_per_round = 0
-            for node in range(1 , self.total_nodes+1) :
-                node_libelle_list_per_round.append ("score_node_{}".format(node))
-                node_libelle_list_per_round.append ("reward_node_{}".format(node))
+            for node_index, node in enumerate(self.node_list):
+                node_libelle_list_per_round.append(f"score_{node}")
+                node_libelle_list_per_round.append(f"reward_{node}")
                 node_reward = 0
-                if df2['Leader Node'][ind] == node :
+                if df2['Leader Node'][ind] == node:
                     node_reward = self.leader_reward
                 else:
                     node_reward = participating_reward_per_node
-                score_node = score_nodes[node-1]
+                score_node = score_nodes[node_index]
                 penalitie_per_node = node_reward * (1 - score_node)
                 final_reward = node_reward * score_node
                 reward_total_per_round += final_reward
                 penalities += penalitie_per_node
-                node_value_list_per_round.append (score_node)
-                node_value_list_per_round.append (final_reward)
-            node_libelle_list_per_round.append ("Reward Total per Round")
+                node_value_list_per_round.append(score_node)
+                node_value_list_per_round.append(final_reward)
+            node_libelle_list_per_round.append("Reward Total per Round")
             node_value_list_per_round.append(reward_total_per_round)
-            #update all data for current round
-            df2.at[ind,'Generated Reward'] = generated_reward
-            df2.at[ind,'Saved Reward'] = saved_reward
-            df2.at[ind,'Participating Reward per Round'] = participating_reward
-            df2.at[ind,'Participating reward per Node'] = participating_reward_per_node
-            df2.at[ind,'Penalities'] = penalities
-            #save all data that will be used in next round
+            # Update all data for current round
+            df2.at[ind, 'Generated Reward'] = generated_reward
+            df2.at[ind, 'Saved Reward'] = saved_reward
+            df2.at[ind, 'Participating Reward per Round'] = participating_reward
+            df2.at[ind, 'Participating reward per Node'] = participating_reward_per_node
+            df2.at[ind, 'Penalities'] = penalities
+            # Save all data that will be used in next round
             preview_saved_reward = saved_reward
             preview_penalities = penalities
             df2.loc[ind, node_libelle_list_per_round] = node_value_list_per_round
-        for node in range(1 , self.total_nodes+1) :
-            df2.at['Total', "reward_node_{}".format(node)] = df2["reward_node_{}".format(node)].sum()
+
+        for node in self.node_list:
+            df2.at['Total', f"reward_{node}"] = df2[f"reward_{node}"].sum()
+
         df2.at['Total', "Leader Reward"] = df2["Leader Reward"].sum()
         df2.at['Total', "Transaction Fees"] = df2["Transaction Fees"].sum()
         df2.at['Total', "Generated Reward"] = df2["Generated Reward"].sum()
@@ -169,10 +183,11 @@ class PyIncentiveBCSystem:
         transaction_fees_approach_2 = []
         previous_saved_part = []
         previous_collected_penalty = []
-
-        for node in range(1 , self.total_nodes+1) :
-            reward_list_approach_1.append(df1["reward_node_{}".format(node)].iloc[-1])
-            reward_list_approach_2.append(df2["reward_node_{}".format(node)].iloc[-1])
+        
+        for node_index, node in enumerate(self.node_list):
+            node_id =  self.node_list[node_index]
+            reward_list_approach_1.append(df1[f"reward_{node_id}"].iloc[-1])
+            reward_list_approach_2.append(df2[f"reward_{node_id}"].iloc[-1])
             list_node_id.append(node)
         all_df_result_1 = pd.DataFrame({'Node': list_node_id, 'Score': score_nodes, 'Normal Approach':reward_list_approach_1, 'Proposed Approach':reward_list_approach_2})
 
@@ -226,7 +241,7 @@ class PyIncentiveBCSystem:
         fig.add_trace(go.Scatter(name="Score",xaxis='x2', yaxis='y2', x=nodes, y = scores, text = all_df_result["Score"].values.tolist(), mode="markers",  marker=dict(color="crimson", size=12),  hovertemplate="%{text}"),row=1, col=1)
         #Table section
         if (with_table):
-            fmt = np.array(['.0f','.2f','.2f','.2f'])
+            fmt = np.array(['N/A','.3f','.3f','.3f'])
             headercolor = 'midnightblue'
             fig.add_trace(go.Table(
                 header=dict(
@@ -305,7 +320,7 @@ class PyIncentiveBCSystem:
                     texttemplate= "%{value:.4s}", textposition='inside' )
 
         if (with_table):
-            fmt = np.array(['.0f','.2f','.2f','.2f','.2f','.2f'])
+            fmt = np.array(['.0f','.3f','.3f','.3f','.3f','.3f'])
             headercolor = 'midnightblue'
             fig.add_trace(go.Table(
                 header=dict(

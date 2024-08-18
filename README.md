@@ -1,13 +1,52 @@
 [![github](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/ouaguid/PyIncentiveBC/)
-![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![version](https://img.shields.io/badge/version-1.2.0-blue.svg)
 [![License](https://img.shields.io/github/license/ouaguid/PyIncentiveBC)](https://github.com/ouaguid/PyIncentiveBC/blob/master/LICENSE)
 
 ## PyIncentiveBC
 
 **PyIncentiveBC** is a Python implementation of "Rewards and Penalties" approaches used in Blockchain-based systems.
 
-## Install
-The package has been tested for Python 3.7.3. Required packages are available in **`requirements.txt`**.
+
+## Overview
+PyIncentiveBC allows researchers and developers to simulate and compare different reward and penalty mechanisms in blockchain systems. It provides a flexible framework for evaluating the effectiveness of various incentivization approaches.
+
+## Quick Start
+### Getting Started for Beginners :
+For users new to Python or blockchain technology, we recommend using PyIncentiveBC through CodeOcean, which requires no installation:
+
+1. **Access CodeOcean**
+   - Open your web browser and go to the [PyIncentiveBC CodeOcean capsule](https://codeocean.com/capsule/2547976/tree/v1)
+   - You my be need to create an account to run the simulation.
+
+2. **Explore the Capsule**
+   - On the left side, you'll see a file browser showing the project structure
+   - The main file we'll be working with is `PyIncentiveBC_demo.ipynb`
+
+3. **Run the Simulation**
+   - Click on the "Reproducible Run" button at the top of the page
+   - This will execute the default simulation using pre-set parameters
+
+4. **View Results**
+   - After the simulation completes, you'll see the output displayed in the notebook
+   - This includes graphs comparing different incentivization approaches
+
+Congratulations! You've run your first PyIncentiveBC simulation. Remember, you can always come back to this capsule to run more simulations or explore the code further.
+
+### For Advanced Users :
+For advanced users or those who prefer local installation, follow these steps:
+
+1. Clone the repository:
+
+`git clone https://github.com/ouaguid/pyIncentiveBC.git`
+
+2. The package has been tested for Python 3.7.3. Required packages are available in **requirements.txt**.
+Install required packages:
+
+`pip install -r requirements.txt`
+
+3. Run the example Jupyter notebook:
+
+`jupyter notebook PyIncentiveBC_demo.ipynb`
 
 ## Example
 An example Jupyter notebook is available in **`PyIncentiveBC_demo.ipynb`**
@@ -42,8 +81,8 @@ As BibTeX:
 }
 ```
 
-## Contact
-For all questions or suggestions, feel free to contact me at ouaguid[at]gmail.com.
+## Support
+If you encounter any issues or have questions, please open an issue on GitHub or contact us at [ouaguid@gmail.com].
 
 ## References
 - Padmavathi, U.; Rajagopalan, N. Concept of blockchain technology and its emergence. In Research Anthology on Convergence of Blockchain, Internet of Things, and Security; IGI global, 2023; pp. 21–36.
