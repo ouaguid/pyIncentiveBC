@@ -379,8 +379,8 @@ class PyIncentiveBCSystem:
         labels = ["Leader Reward","Transaction Fees","Penalities","Saved Reward"]
 
         fig = make_subplots(rows=1, cols=2, specs=[[{'type':'domain'}, {'type':'domain'}]])
-        fig.add_trace(go.Pie(labels=labels, values=list_appraoch_1 , name="Normal Approach", title="Normal Approach", titleposition="bottom center"), 1, 1)
-        fig.add_trace(go.Pie(labels=labels, values=list_approach_2, name="Proposed Approach", title="Proposed Approach", titleposition="bottom center"), 1, 2)
+        fig.add_trace(go.Pie(labels=labels, values=list_appraoch_1 , name="Normal Approach", title="Normal Approach", titleposition="bottom center", texttemplate="%{percent:.0%}", rotation=90), 1, 1)
+        fig.add_trace(go.Pie(labels=labels, values=list_approach_2, name="Proposed Approach", title="Proposed Approach", titleposition="bottom center", texttemplate="%{percent:.0%}"), 1, 2)
 
         fig.update_traces(hole=.4, hoverinfo="label+value+name")
         fig.update_layout(

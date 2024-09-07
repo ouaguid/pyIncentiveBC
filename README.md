@@ -58,17 +58,24 @@ https://codeocean.com/capsule/2547976/tree/v1
 ## Citation
 If you use **`PyIncentiveBC`** in your work, please cite the following publications:
 
-> A. Ouaguid, M. Hanine, Z. Chiba, N. Abghour, M. Ouzzif (2024), "PyIncentiveBC: A Python module for simulation of incentivization mechanism implemented in Blockchain-based Systems"
+> Ouaguid, Abdellah, Mohamed Hanine, Zouhair Chiba, Noreddine Abghour, and Mohammed Ouzzif. 2024. "PyIncentiveBC: A Python Module for Simulation of Incentivization Mechanism Implemented in Blockchain-Based Systems" Computation 12, no. 9: 179. https://doi.org/10.3390/computation12090179
 
 > A. Ouaguid, N. Abghour, M. Ouzzif, Towards a new reward and punishment approach for blockchain-based system, in: 2019 International Conference on Systems of Collaboration Big Data, Internet of Things & Security (SysCoBIoTS), IEEE, 2019, pp. 1–7.
 
 As BibTeX:
 
 ```
-@article{pyincentivebc,
-    title = {PyIncentiveBC: A Python module for simulation of incentivization mechanism implemented in Blockchain-based Systems},
-    year = {2024},
-    author = {A. Ouaguid and M. Hanine and Z. Chiba and N. Abghour and M. Ouzzif}}
+@Article{computation12090179,
+AUTHOR = {Ouaguid, Abdellah and Hanine, Mohamed and Chiba, Zouhair and Abghour, Noreddine and Ouzzif, Mohammed},
+TITLE = {PyIncentiveBC: A Python Module for Simulation of Incentivization Mechanism Implemented in Blockchain-Based Systems},
+JOURNAL = {Computation},
+VOLUME = {12},
+YEAR = {2024},
+NUMBER = {9},
+ARTICLE-NUMBER = {179},
+URL = {https://www.mdpi.com/2079-3197/12/9/179},
+ISSN = {2079-3197},
+DOI = {10.3390/computation12090179}
 }
 
 @inproceedings{ouaguid2019towards,
