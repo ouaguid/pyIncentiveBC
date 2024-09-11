@@ -1,5 +1,5 @@
 [![github](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/ouaguid/PyIncentiveBC/)
-![version](https://img.shields.io/badge/version-2.0.0-blue.svg)
+![version](https://img.shields.io/badge/version-3.0.0-blue.svg)
 [![License](https://img.shields.io/github/license/ouaguid/PyIncentiveBC)](https://github.com/ouaguid/PyIncentiveBC/blob/master/LICENSE)
 
 ## PyIncentiveBC
@@ -15,7 +15,7 @@ PyIncentiveBC allows researchers and developers to simulate and compare differen
 For users new to Python or blockchain technology, we recommend using PyIncentiveBC through CodeOcean, which requires no installation:
 
 1. **Access CodeOcean**
-   - Open your web browser and go to the [PyIncentiveBC CodeOcean capsule](https://codeocean.com/capsule/2547976/tree/v1)
+   - Open your web browser and go to the [PyIncentiveBC CodeOcean capsule](https://codeocean.com/capsule/2547976/tree/v3)
    - You my be need to create an account to run the simulation.
 
 2. **Explore the Capsule**
@@ -53,7 +53,7 @@ An example Jupyter notebook is available in **`PyIncentiveBC_demo.ipynb`**
 
 ## CodeOcean capsule
 To check this software running you can access the codeocean capsule via:
-https://codeocean.com/capsule/2547976/tree/v1
+https://codeocean.com/capsule/2547976/tree/v3
 
 ## Citation
 If you use **`PyIncentiveBC`** in your work, please cite the following publications:
@@ -134,7 +134,7 @@ If you encounter any issues or have questions, please open an issue on GitHub or
 - Van Der Walt, S.; Colbert, S.C.; Varoquaux, G. The NumPy array: a structure for efficientnumerical computation. Computing in science & engineering 2011, 13, 22–30.
 - Plotly Open Source Graphing Library for Python, 2023. https://plotly.com/python/, visited2024-06-20.
 - McKinney, W.; et al. Data structures for statistical computing in python. In Proceedings of theProceedings of the 9th Python in Science Conference. Austin, TX, 2010, Vol. 445, pp. 51–56.
-- PyIncentiveBC: A Python module for simulation of incentivization mechanism implemented inBlockchain-based Systems, 2024. https://codeocean.com/capsule/2547976/tree/v1, visited2024-06-20, https://doi.org/10.24433/CO.4994364.v1.
+- PyIncentiveBC: A Python module for simulation of incentivization mechanism implemented inBlockchain-based Systems, 2024. https://codeocean.com/capsule/2547976/tree/v3, visited2024-06-20, https://doi.org/10.24433/CO.4994364.v3.
 - Blockchair, 2024. https://gz.blockchair.com/bitcoin/blocks/, visited 2024-08-11.
 - What is block health ?, 2024. https://mempool.space/docs/faq#what-is-block-health, visited2024-08-11.
 - Empty Block Report:A data driven analysis of the bitcoin empty block phenomenon, 2024.research.mempool.space/empty-block-report/, visited 2024-08-11.
